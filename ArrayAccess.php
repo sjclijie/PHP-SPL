@@ -11,7 +11,7 @@
  *
  * ArrayAccess接口必须实现下面四个方法
  *
- * offsetExists( $offset )          array_key_exists();
+ * offsetExists( $offset )          isset();
  *
  * offsetGet( $offset );            $obj[1];  取值时调用
  *
@@ -23,19 +23,58 @@
 
 class Article implements ArrayAccess {
 
+    protected $title;
+
+    protected $author;
+
+    protected $content;
+
+    public function __construct( $title, $author, $content ) {
+        $this->title = $title;
+        $this->author = $author;
+        $this->content = $content;
+    }
+
     public function offsetExists($offset) {
-        // TODO: Implement offsetExists() method.
+        return array_key_exists( $offset, get_object_vars($this) );
     }
 
     public function offsetGet($offset) {
-        // TODO: Implement offsetGet() method.
+        if ( $this->offsetExists($offset) ){
+            return $this->{$offset};
+        } else {
+            return false;
+        }
     }
 
     public function offsetSet($offset, $value) {
-        // TODO: Implement offsetSet() method.
+        if ( $this->offsetExists( $offset ) ){
+            $this->{$offset} = $value;
+        }
     }
 
     public function offsetUnset($offset) {
-        // TODO: Implement offsetUnset() method.
+        if ( $this->offsetExists($offset) ){
+            $this->{$offset} = null;
+            return true;
+        }
+
+        return false;
     }
 }
+
+$article = new Article('titlexxx','jaylee', 'this is content');
+
+print_r( $article );
+
+var_dump($article['title']);
+
+var_dump( isset($article['author']) );
+
+$article['title'] = 'xxxxxx';
+
+var_dump( $article['title'] );
+
+unset( $article['title'] );
+
+var_dump( $article['title'] );
