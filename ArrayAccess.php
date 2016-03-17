@@ -19,6 +19,8 @@
  *
  * offsetUnset( $offset );          unset($obj[1]);   unset时调用
  *
+ * 注意：除非实现了Iterator接口,否则该对象不能以foreach遍历
+ *
  */
 
 class Article implements ArrayAccess {
