@@ -56,5 +56,3 @@ foreach( new ArrayIterator($array) as $key => $value ){
 }
 
 
-
-
